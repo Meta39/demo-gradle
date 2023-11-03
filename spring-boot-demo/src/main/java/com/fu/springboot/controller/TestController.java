@@ -8,8 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("test")
 public class TestController {
+
     @GetMapping
     public String hello(){
+//        throw new UsernameNotFoundException();//直接抛出自定义异常
         return "Hello world.";
     }
+
 }
