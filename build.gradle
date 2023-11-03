@@ -27,8 +27,8 @@ allprojects {
     apply plugin: 'java'
     group 'com.fu'//项目组
     version '1'//项目版本
-    sourceCompatibility = 17//java版本
-    targetCompatibility = 17//java版本
+    sourceCompatibility = JavaVersion.VERSION_17//java版本
+    targetCompatibility = JavaVersion.VERSION_17//java版本
 
     tasks.withType(JavaCompile){
         options.encoding = "UTF-8"
