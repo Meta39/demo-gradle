@@ -1,0 +1,61 @@
+//如果报Could not resolve org.springframework.boot:spring-boot-gradle-plugin:X.X.X，则修改IDEA setting中Gradel JVM为Project SDK。
+buildscript {//构建gradle脚本自身需要的资源，可以声明的资源包括依赖项、第三方插件、maven仓库地址等
+    ext{
+        //统一版本管理
+        lombokVersion = '1.18.26'//lombok版本
+        springBootVersion = '3.0.5'//spring boot 版本
+        mysqlVersion = '8.0.31'//mysql版本
+        mybatisPlusVersion = '3.5.4'
+    }
+
+    //设置仓库
+    repositories {
+        //从前到后顺序执行，找不到就往后找。
+        mavenLocal()//本地仓库
+        maven { url 'https://maven.aliyun.com/repository/public' }//镜像仓库
+        mavenCentral()//官方仓库
+    }
+
+    dependencies {
+        //spring-boot-gradle插件，方便版本管理
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+//全局配置，包括root和其子项目
+allprojects {
+    apply plugin: 'java'
+    group 'com.fu'//项目组
+    version '1'//项目版本
+    sourceCompatibility = 17//java版本
+    targetCompatibility = 17//java版本
+
+    tasks.withType(JavaCompile){
+        options.encoding = "UTF-8"
+    }
+
+    repositories {
+        //从前到后顺序执行，找不到就往后找。
+        mavenLocal()//本地仓库
+        maven { url 'https://maven.aliyun.com/repository/public' }//镜像仓库
+        mavenCentral()//官方仓库
+    }
+}
+
+//配置所有子项目
+subprojects {
+    apply plugin: 'io.spring.dependency-management'//版本管理插件
+
+    //dependencyManagement版本统一管理，类似maven的dependencyManagement
+    dependencyManagement{
+        dependencies {
+            //统一版本管理
+            dependency "org.projectlombok:lombok:${lombokVersion}"
+            dependency "mysql:mysql-connector-java:${mysqlVersion}"
+            dependency "com.baomidou:mybatis-plus-boot-starter:${mybatisPlusVersion}"
+        }
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"//Spring Boot
+        }
+    }
+}

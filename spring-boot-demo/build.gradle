@@ -1,0 +1,16 @@
+apply plugin: 'org.springframework.boot'
+dependencies {
+    compileOnly 'org.projectlombok:lombok'//仅编译时使用，不参与打包
+    annotationProcessor 'org.projectlombok:lombok'//注解
+    implementation 'org.springframework.boot:spring-boot-starter-web'//Web
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'//只在测试时使用
+    runtimeOnly 'mysql:mysql-connector-java'//仅运行时使用，不参与编译，参与打包
+    implementation 'com.baomidou:mybatis-plus-boot-starter'//MyBatis-Plus
+}
+springBoot {
+    mainClass = 'com.fu.springboot.SpringbootDemoApplication'//主启动类
+}
+bootJar {//修改打成jar包以后的名字
+    archiveBaseName = 'springBootDemo'//自定义的jar包名
+    version(null)//版本号
+}
