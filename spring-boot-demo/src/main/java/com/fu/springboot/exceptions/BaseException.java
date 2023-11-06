@@ -10,6 +10,11 @@ import com.fu.springboot.global.Res;
 public class BaseException extends RuntimeException {
     private final Integer code;//默认基础错误状态码为1
 
+    public BaseException() {
+        super();
+        this.code = Res.DEFAULT_FAIL_CODE;
+    }
+
     /**
      * 默认异常
      * @param message 错误信息
