@@ -4,7 +4,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'//注解
     implementation 'org.springframework.boot:spring-boot-starter-web'//Web
     testImplementation 'org.springframework.boot:spring-boot-starter-test'//只在测试时使用
-    runtimeOnly 'mysql:mysql-connector-java'//仅运行时使用，不参与编译，参与打包
+    runtimeOnly 'com.mysql:mysql-connector-j'//仅运行时使用，不参与编译，参与打包
     implementation 'com.baomidou:mybatis-plus-boot-starter'//MyBatis-Plus
 }
 springBoot {

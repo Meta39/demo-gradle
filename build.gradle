@@ -4,7 +4,7 @@ buildscript {//构建gradle脚本自身需要的资源，可以声明的资源�
         //统一版本管理
         lombokVersion = '1.18.26'//lombok版本
         springBootVersion = '3.0.5'//spring boot 版本
-        mysqlVersion = '8.0.31'//mysql版本
+        mysqlVersion = '8.0.32'//mysql版本
         mybatisPlusVersion = '3.5.4'
     }
 
@@ -51,7 +51,7 @@ subprojects {
         dependencies {
             //统一版本管理
             dependency "org.projectlombok:lombok:${lombokVersion}"
-            dependency "mysql:mysql-connector-java:${mysqlVersion}"
+            dependency "com.mysql:mysql-connector-j:${mysqlVersion}"
             dependency "com.baomidou:mybatis-plus-boot-starter:${mybatisPlusVersion}"
         }
         imports {
