@@ -1,6 +1,7 @@
 package com.fu.springboot.exceptions;
 
-import com.fu.springboot.util.R;
+
+import com.fu.springboot.global.Res;
 
 /**
  * 基础异常(其它异常的基类，其它需要异常状态码的异常继承此类)
@@ -15,7 +16,7 @@ public class BaseException extends RuntimeException {
      */
     public BaseException(String message) {
         super(message);
-        this.code = R.FAIL_CODE;
+        this.code = Res.DEFAULT_FAIL_CODE;
     }
 
     /**
@@ -35,7 +36,7 @@ public class BaseException extends RuntimeException {
      */
     public BaseException(String message, Throwable e) {
         super(message, e);
-        this.code = R.FAIL_CODE;
+        this.code = Res.DEFAULT_FAIL_CODE;
     }
 
     public BaseException(Integer code, String message, Throwable e) {

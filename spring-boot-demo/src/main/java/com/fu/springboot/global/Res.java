@@ -1,4 +1,4 @@
-package com.fu.springboot.util;
+package com.fu.springboot.global;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -11,6 +11,9 @@ public class Res<T> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 6558796578827818466L;
+    public static final Integer DEFAULT_SUCCESS_CODE = 0;//默认成功状态码
+    public static final String DEFAULT_SUCCESS_MESSAGE = "success";//默认成功状态码
+    public static final Integer DEFAULT_FAIL_CODE = 1;//默认失败状态码
 
     private Integer code; //成功或异常状态码（成功默认为0，失败默认为1）
 
@@ -18,8 +21,52 @@ public class Res<T> implements Serializable {
 
     private T data; //数据（失败默认返回null）
 
-    //---------------------------------------- 成功 --------------------------------------------------------
+    //--------------------------------- 成功 -----------------------------------
 
+    /**
+     * 成功
+     * @param data 数据
+     */
+    public Res(T data) {
+        this.code = DEFAULT_SUCCESS_CODE;
+        this.messgae = DEFAULT_SUCCESS_MESSAGE;
+        this.data = data;
+    }
+
+    /**
+     * 成功
+     * @param code 状态码
+     * @param data 数据
+     */
+    public Res(Integer code, T data) {
+        this.code = code;
+        this.data = data;
+    }
+
+    /**
+     * 成功
+     * @param messgae 成功信息
+     * @param data 数据
+     */
+    public Res(String messgae, T data) {
+        this.code = DEFAULT_SUCCESS_CODE;
+        this.messgae = messgae;
+        this.data = data;
+    }
+
+    //--------------------------------- 失败 -----------------------------------
+
+    /**
+     * 错误
+     * @param code 错误码
+     * @param messgae 错误信息
+     */
+    public Res(Integer code, String messgae) {
+        this.code = code;
+        this.messgae = messgae;
+    }
+
+    //全参构造
     /**
      * @param code    状态码（无特殊情况，成功默认为0，失败默认为1）
      * @param messgae 成功/失败信息

@@ -3,8 +3,6 @@ package com.fu.springboot.global;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fu.springboot.exceptions.BaseException;
-import com.fu.springboot.util.R;
-import com.fu.springboot.util.Res;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.MethodParameter;
@@ -37,7 +35,7 @@ public class GlobalResponseBodyAdvice implements ResponseBodyAdvice<Object> {
      */
     @ExceptionHandler(value = BaseException.class)
     public Res<?> err(BaseException e) {
-        return R.res(e.getCode(), e.getMessage(), null);
+        return new Res<>(e.getCode(), e.getMessage());
     }
 
     /**
@@ -47,7 +45,7 @@ public class GlobalResponseBodyAdvice implements ResponseBodyAdvice<Object> {
     @ExceptionHandler(value = Exception.class)
     public Res<?> exception(Exception e) {
         log.error("exception", e);
-        return R.res(R.FAIL_CODE, e.getMessage(), null);
+        return new Res<>(Res.DEFAULT_FAIL_CODE, e.getMessage());
     }
 
     /**
@@ -56,7 +54,7 @@ public class GlobalResponseBodyAdvice implements ResponseBodyAdvice<Object> {
      */
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public Res<?> missingServletRequestParameterException(MissingServletRequestParameterException e) {
-        return R.res(R.FAIL_CODE, e.getMessage(), null);
+        return new Res<>(Res.DEFAULT_FAIL_CODE, e.getMessage());
     }
 
     /**
@@ -65,7 +63,7 @@ public class GlobalResponseBodyAdvice implements ResponseBodyAdvice<Object> {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Res<?> methodArgumentNotValidException(MethodArgumentNotValidException e) {
-        return R.res(R.FAIL_CODE, e.getBindingResult().getAllErrors().stream().map(ObjectError::getDefaultMessage).collect(Collectors.joining(";")), null);
+        return new Res<>(Res.DEFAULT_FAIL_CODE, e.getBindingResult().getAllErrors().stream().map(ObjectError::getDefaultMessage).collect(Collectors.joining(";")));
     }
 
     //-----------------------------------------------有新的异常在上面加--------------------------------------------------------
@@ -96,10 +94,10 @@ public class GlobalResponseBodyAdvice implements ResponseBodyAdvice<Object> {
     public Object beforeBodyWrite(Object body, @NonNull MethodParameter returnType, @NonNull MediaType selectedContentType, @NonNull Class<? extends HttpMessageConverter<?>> selectedConverterType, @NonNull ServerHttpRequest request, @NonNull ServerHttpResponse response) {
         if (body instanceof String) {//String类型要特殊处理
             try {
-                return objectMapper.writeValueAsString(R.res(body));
+                return objectMapper.writeValueAsString(new Res<>(body));
             } catch (JsonProcessingException e) {
                 log.error("beforeBodyWrite JSON 解析异常", e);
-                return R.res(R.FAIL_CODE, "beforeBodyWrite JSON 解析异常", null);
+                return new Res<>(Res.DEFAULT_FAIL_CODE, "beforeBodyWrite JSON 解析异常");
             }
         } else if (body instanceof Res) {//本身是Res直接返回即可。例如：全局异常处理，返回的就是Res
             return body;
@@ -107,9 +105,9 @@ public class GlobalResponseBodyAdvice implements ResponseBodyAdvice<Object> {
             //解决404、500等spring没有捕获的异常问题，只能放到最后的判断条件去判断。如果LinkedHashMap包含status状态码的key，则抛出异常。
             log.error("beforeBodyWrite捕获到spring没有捕获的异常问题：{}", map);
             String errorMessage = "error：" + map.get("error") + ",message：" + map.get("message") + ",path：" + map.get("path");
-            return R.res((Integer) map.get("status"), errorMessage, null);
+            return new Res<>((Integer) map.get("status"), errorMessage);
         }
-        return R.res(body);
+        return new Res<>(body);
     }
 
 }
