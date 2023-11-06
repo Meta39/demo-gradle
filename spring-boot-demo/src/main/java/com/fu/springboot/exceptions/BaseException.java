@@ -10,13 +10,8 @@ import com.fu.springboot.global.Res;
 public class BaseException extends RuntimeException {
     private final Integer code;//默认基础错误状态码为1
 
-    public BaseException() {
-        super();
-        this.code = Res.DEFAULT_FAIL_CODE;
-    }
-
     /**
-     * 默认异常
+     * 默认异常：允许直接抛出此异常，即：不允许直接 throw new BaseException(message);
      * @param message 错误信息
      */
     public BaseException(String message) {
@@ -25,27 +20,14 @@ public class BaseException extends RuntimeException {
     }
 
     /**
-     * 自定义异常
+     * 自定义异常（例子：UsernameNotFoundException）
+     * 受保护的方法，只允许子类使用！禁止改成public！
+     * 不允许直接 throw new BaseException(code, message) 而应该单独定义一个Exception类继承 BaseException() 然后抛出定义的异常类！
      * @param code 自定义异常状态码
      * @param message 自定义异常信息
      */
-    public BaseException(Integer code, String message) {
+    protected BaseException(Integer code, String message) {
         super(message);
-        this.code = code;
-    }
-
-    /**
-     * 默认异常
-     * @param message 异常信息
-     * @param e e
-     */
-    public BaseException(String message, Throwable e) {
-        super(message, e);
-        this.code = Res.DEFAULT_FAIL_CODE;
-    }
-
-    public BaseException(Integer code, String message, Throwable e) {
-        super(message, e);
         this.code = code;
     }
 

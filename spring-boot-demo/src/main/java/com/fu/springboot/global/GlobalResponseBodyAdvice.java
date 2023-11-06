@@ -3,6 +3,7 @@ package com.fu.springboot.global;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fu.springboot.exceptions.BaseException;
+import com.fu.springboot.exceptions.NotLogException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.MethodParameter;
@@ -30,11 +31,21 @@ public class GlobalResponseBodyAdvice implements ResponseBodyAdvice<Object> {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
-     * 自定义异常
+     * 直接返回给前端的异常（不需要记录到日志）
+     * @param e 异常
+     */
+    @ExceptionHandler(value = NotLogException.class)
+    public Res<?> err(NotLogException e) {
+        return new Res<>(e.getCode(), e.getMessage());
+    }
+
+    /**
+     * 返回给前端并输出到控制台/文件的自定义异常（需要记录到日志）
      * 这里是最终返回，不能抛出异常，如果抛出异常就无法返回给前端信息了
      */
     @ExceptionHandler(value = BaseException.class)
     public Res<?> err(BaseException e) {
+        log.error("BaseException", e);
         return new Res<>(e.getCode(), e.getMessage());
     }
 
@@ -44,7 +55,7 @@ public class GlobalResponseBodyAdvice implements ResponseBodyAdvice<Object> {
      */
     @ExceptionHandler(value = Exception.class)
     public Res<?> exception(Exception e) {
-        log.error("exception", e);
+        log.error("Exception", e);
         return new Res<>(Res.DEFAULT_FAIL_CODE, e.getMessage());
     }
 
