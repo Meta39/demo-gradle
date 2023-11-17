@@ -2,8 +2,8 @@ package com.fu.springboot.global;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fu.springboot.exceptions.BaseException;
-import com.fu.springboot.exceptions.NotLogException;
+import com.fu.springboot.exceptions.CheckException;
+import com.fu.springboot.exceptions.UsernameNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.MethodParameter;
@@ -30,32 +30,26 @@ public class GlobalResponseBodyAdvice implements ResponseBodyAdvice<Object> {
     private static final Logger log = LoggerFactory.getLogger(GlobalResponseBodyAdvice.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
+    //------------------------------------------------------ 自定义异常状态码的异常 ----------------------------------------
     /**
-     * 直接返回给前端的异常（不需要记录到日志）
+     * 找不到用户名异常
+     * @param e UsernameNotFoundException
+     * @return 自定义状态码和异常信息
+     */
+    @ExceptionHandler(value = UsernameNotFoundException.class)
+    public Res<?> usernameNotFoundException(UsernameNotFoundException e) {
+        log.error("UsernameNotFoundException", e);
+        return new Res<>(UsernameNotFoundException.CODE, e.getMessage());
+    }
+
+    //------------------------------------------------------ 非自定义异常状态码的异常 --------------------------------------
+
+    /**
+     * 校验异常（不需要记录到日志）
      * @param e 异常
      */
-    @ExceptionHandler(value = NotLogException.class)
-    public Res<?> err(NotLogException e) {
-        return new Res<>(e.getCode(), e.getMessage());
-    }
-
-    /**
-     * 返回给前端并输出到控制台/文件的自定义异常（需要记录到日志）
-     * 这里是最终返回，不能抛出异常，如果抛出异常就无法返回给前端信息了
-     */
-    @ExceptionHandler(value = BaseException.class)
-    public Res<?> err(BaseException e) {
-        log.error("BaseException", e);
-        return new Res<>(e.getCode(), e.getMessage());
-    }
-
-    /**
-     * 服务器异常（需要记录到日志）
-     * 这里是最终返回，不能抛出异常，如果抛出异常就无法返回给前端信息了
-     */
-    @ExceptionHandler(value = Exception.class)
-    public Res<?> exception(Exception e) {
-        log.error("Exception", e);
+    @ExceptionHandler(value = CheckException.class)
+    public Res<?> checkException(CheckException e) {
         return new Res<>(Res.DEFAULT_FAIL_CODE, e.getMessage());
     }
 
@@ -75,6 +69,16 @@ public class GlobalResponseBodyAdvice implements ResponseBodyAdvice<Object> {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Res<?> methodArgumentNotValidException(MethodArgumentNotValidException e) {
         return new Res<>(Res.DEFAULT_FAIL_CODE, e.getBindingResult().getAllErrors().stream().map(ObjectError::getDefaultMessage).collect(Collectors.joining(";")));
+    }
+
+    /**
+     * 服务器异常（需要记录到日志）
+     * 这里是最终返回，不能抛出异常，如果抛出异常就无法返回给前端信息了
+     */
+    @ExceptionHandler(value = Exception.class)
+    public Res<?> exception(Exception e) {
+        log.error("Exception", e);
+        return new Res<>(Res.DEFAULT_FAIL_CODE, e.getMessage());
     }
 
     //-----------------------------------------------有新的异常在上面加--------------------------------------------------------
