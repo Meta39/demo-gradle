@@ -2,8 +2,8 @@ package com.fu.springboot.global;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fu.springboot.exceptions.CheckException;
-import com.fu.springboot.exceptions.UsernameNotFoundException;
+import com.fu.springboot.exceptions.BaseException;
+import com.fu.springboot.exceptions.custom.MiniProgramException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.MethodParameter;
@@ -31,27 +31,28 @@ public class GlobalResponseBodyAdvice implements ResponseBodyAdvice<Object> {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     //------------------------------------------------------ 自定义异常状态码的异常 ----------------------------------------
+
     /**
-     * 找不到用户名异常
-     * @param e UsernameNotFoundException
-     * @return 自定义状态码和异常信息
+     * 小程序异常状态码和异常信息
+     * @param e BaseException
      */
-    @ExceptionHandler(value = UsernameNotFoundException.class)
-    public Res<?> usernameNotFoundException(UsernameNotFoundException e) {
-        log.error("UsernameNotFoundException", e);
-        return new Res<>(UsernameNotFoundException.CODE, e.getMessage());
+    @ExceptionHandler(value = MiniProgramException.class)
+    public Res<?> miniProgramException(MiniProgramException e) {
+        log.error("MiniProgramException", e);
+        return new Res<>(e.getStatus(), e.getMessage());
+    }
+
+    /**
+     * 自定义异常状态码和异常信息
+     * @param e BaseException
+     */
+    @ExceptionHandler(value = BaseException.class)
+    public Res<?> baseException(BaseException e) {
+        log.error("BaseException", e);
+        return new Res<>(e.getStatus(), e.getMessage());
     }
 
     //------------------------------------------------------ 非自定义异常状态码的异常 --------------------------------------
-
-    /**
-     * 校验异常（不需要记录到日志）
-     * @param e 异常
-     */
-    @ExceptionHandler(value = CheckException.class)
-    public Res<?> checkException(CheckException e) {
-        return new Res<>(Res.DEFAULT_FAIL_CODE, e.getMessage());
-    }
 
     /**
      * RequestParam注解请求参数异常（不需要记录到日志）
