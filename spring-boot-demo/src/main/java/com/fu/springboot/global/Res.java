@@ -33,27 +33,6 @@ public class Res<T> implements Serializable {
         this.data = data;
     }
 
-    /**
-     * 成功
-     * @param code 状态码
-     * @param data 数据
-     */
-    public Res(Integer code, T data) {
-        this.code = code;
-        this.data = data;
-    }
-
-    /**
-     * 成功
-     * @param messgae 成功信息
-     * @param data 数据
-     */
-    public Res(String messgae, T data) {
-        this.code = DEFAULT_SUCCESS_CODE;
-        this.messgae = messgae;
-        this.data = data;
-    }
-
     //--------------------------------- 失败 -----------------------------------
 
     /**
@@ -66,7 +45,7 @@ public class Res<T> implements Serializable {
         this.messgae = messgae;
     }
 
-    //全参构造
+    //--------------------------------- 全参构造 -----------------------------------
     /**
      * @param code    状态码（无特殊情况，成功默认为0，失败默认为1）
      * @param messgae 成功/失败信息
