@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
     @GetMapping
-    public String hello(){
-//        throw new RuntimeException("RuntimeException");//一般异常，只抛异常信息，不改变默认异常状态码
-//        throw new UsernameNotFoundException();//找不到用户名异常，抛出固定异常状态码和异常信息
-//        throw new MiniProgramException("小程序异常");//小程序异常，抛出固定异常状态码和自定义异常信息
+    public String hello() throws Exception {
+//        throw new Exception("Exception");//非运行时异常，不需要状态码区分。
+//        throw new RuntimeException("RuntimeException");//一般运行时异常，不需要状态码区分。
+//        throw new UnauthorizedException();//特殊异常，未认证异常，需要其它异常状态码区分。
+//        throw new ForbiddenException();//特殊异常，未鉴权异常，需要其它异常状态码区分。
+//        throw new MiniProgramException("小程序异常");//小程序异常，不需要状态码区分，但是需要区分异常类
         return "Hello world.";
     }
 
