@@ -2,6 +2,7 @@ apply plugin: 'org.springframework.boot'
 dependencies {
     compileOnly 'org.projectlombok:lombok'//仅编译时使用，不参与打包
     annotationProcessor 'org.projectlombok:lombok'//注解
+    testImplementation 'org.projectlombok:lombok'
     implementation 'org.springframework.boot:spring-boot-starter-web'//Web
     testImplementation 'org.springframework.boot:spring-boot-starter-test'//只在测试时使用
     runtimeOnly 'com.mysql:mysql-connector-j'//仅运行时使用，不参与编译，参与打包
