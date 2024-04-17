@@ -30,7 +30,7 @@ allprojects {
     sourceCompatibility = JavaVersion.VERSION_17//java版本
     targetCompatibility = JavaVersion.VERSION_17//java版本
 
-    tasks.withType(JavaCompile){
+    tasks.withType(JavaCompile).configureEach {
         options.encoding = "UTF-8"
     }
 
