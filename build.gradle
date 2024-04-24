@@ -3,9 +3,10 @@ buildscript {//构建gradle脚本自身需要的资源，可以声明的资源�
     ext{
         //统一版本管理
         lombokVersion = '1.18.26'//lombok版本
-        springBootVersion = '3.0.5'//spring boot 版本
+        springBootVersion = '3.2.5'//spring boot 版本
         mysqlVersion = '8.0.32'//mysql版本
-        mybatisPlusVersion = '3.5.4'
+        mybatisPlusVersion = '3.5.6'
+        springAiVersion = '0.8.1'//AI版本
     }
 
     //设置仓库
@@ -38,6 +39,7 @@ allprojects {
         //从前到后顺序执行，找不到就往后找。
         mavenLocal()//本地仓库
         maven { url 'https://maven.aliyun.com/repository/public' }//镜像仓库
+        maven { url 'https://repo.spring.io/milestone'}
         mavenCentral()//官方仓库
     }
 }
@@ -56,6 +58,7 @@ subprojects {
         }
         imports {
             mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"//Spring Boot
+            mavenBom "org.springframework.ai:spring-ai-bom:${springAiVersion}"//Spring AI
         }
     }
 }

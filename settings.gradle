@@ -1,2 +1,4 @@
 rootProject.name = 'demo-gradle'
 include 'spring-boot-demo'
+include 'spring-boot-ai-demo'
+
