@@ -2,9 +2,9 @@
 buildscript {//构建gradle脚本自身需要的资源，可以声明的资源包括依赖项、第三方插件、maven仓库地址等
     ext{
         //统一版本管理
-        lombokVersion = '1.18.26'//lombok版本
+        lombokVersion = '1.18.32'//lombok版本
         springBootVersion = '3.2.5'//spring boot 版本
-        mysqlVersion = '8.0.32'//mysql版本
+        mysqlVersion = '8.4.0'//mysql版本
         mybatisPlusVersion = '3.5.6'
         springAiVersion = '0.8.1'//AI版本
     }
@@ -28,8 +28,8 @@ allprojects {
     apply plugin: 'java'
     group 'com.fu'//项目组
     version '1'//项目版本
-    sourceCompatibility = JavaVersion.VERSION_17//java版本
-    targetCompatibility = JavaVersion.VERSION_17//java版本
+    sourceCompatibility = JavaVersion.VERSION_21//java版本
+    targetCompatibility = JavaVersion.VERSION_21//java版本
 
     tasks.withType(JavaCompile).configureEach {
         options.encoding = "UTF-8"

@@ -12,6 +12,15 @@ spring:
     username: root
     password: 123456
 
+mybatis-plus:
+  global-config:
+    banner: off
+  configuration:
+    # 数据库null值处理
+    jdbc-type-for-null: null
+    # 数据库字段名下划线转驼峰命名，MyBatis-Plus默认true，MyBatis默认false
+    map-underscore-to-camel-case: true
+
 logging:
   pattern:
     # 控制台日期输出格式
