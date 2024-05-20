@@ -7,6 +7,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'//只在测试时使用
     runtimeOnly 'com.mysql:mysql-connector-j'//仅运行时使用，不参与编译，参与打包
     implementation 'com.baomidou:mybatis-plus-boot-starter'//MyBatis-Plus
+    implementation 'org.apache.httpcomponents.client5:httpclient5'//apache http 连接池
 }
 springBoot {
     mainClass = 'com.fu.springboot.SpringbootDemoApplication'//主启动类
