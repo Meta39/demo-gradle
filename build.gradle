@@ -29,11 +29,15 @@ allprojects {
     apply plugin: 'java'
     group 'com.fu'//项目组
     version '1'//项目版本
-    sourceCompatibility = JavaVersion.VERSION_21//java版本
-    targetCompatibility = JavaVersion.VERSION_21//java版本
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_21//java版本
+        targetCompatibility = JavaVersion.VERSION_21//java版本
+    }
 
     tasks.withType(JavaCompile).configureEach {
         options.encoding = "UTF-8"
+        options.compilerArgs += "--enable-preview"
     }
 
     repositories {
