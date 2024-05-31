@@ -1,4 +1,4 @@
-//如果报Could not resolve org.springframework.boot:spring-boot-gradle-plugin:X.X.X，则修改IDEA setting中Gradel JVM为Project SDK。
+//如果报Could not resolve org.springframework.boot:spring-boot-gradle-plugin:X.X.X，则修改IDEA setting中 Gradle JVM为Project SDK。
 buildscript {//构建gradle脚本自身需要的资源，可以声明的资源包括依赖项、第三方插件、maven仓库地址等
     ext{
         //统一版本管理
