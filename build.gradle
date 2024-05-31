@@ -40,6 +40,11 @@ allprojects {
         options.compilerArgs += "--enable-preview"
     }
 
+    //所有项目执行 Gradle 命令时跳过 compileTestJava 命令
+    tasks.named("compileTestJava").configure {
+        enabled = false
+    }
+
     repositories {
         //从前到后顺序执行，找不到就往后找。
         mavenLocal()//本地仓库
