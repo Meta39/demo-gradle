@@ -2,6 +2,16 @@ server:
   port: 82
 
 spring:
+  main:
+    # 虚拟线程的一个副作用是它们是守护进程线程。如果JVM的所有线程都是守护进程线程，则JVM将退出。
+    # 例如，当您依赖@Scheduled bean来保持应用程序的活力时，这种行为可能会成为一个问题。
+    # 如果使用虚拟线程，则调度程序线程是一个虚拟线程，因此是一个守护进程线程，不会使JVM保持活动状态。这不仅会影响调度，其他技术也可能如此。
+    # 为了在所有情况下保持JVM的运行，建议将属性spring.main.keep-alive设置为true。这确保JVM保持活动状态，即使所有线程都是虚拟线程。
+    keep-alive: true
+  threads:
+    virtual:
+      # 启用虚拟线程
+      enabled: true
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
