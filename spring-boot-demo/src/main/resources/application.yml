@@ -1,5 +1,8 @@
 server:
   port: 82
+  # 启用 HTTP 响应压缩
+  compression:
+    enabled: true
 
 spring:
   main:
