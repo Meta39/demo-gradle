@@ -12,6 +12,10 @@ spring:
     virtual:
       # 启用虚拟线程
       enabled: true
+  mvc:
+    problemdetails:
+      # 404返回json格式，而不是返回页面
+      enabled: true
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
