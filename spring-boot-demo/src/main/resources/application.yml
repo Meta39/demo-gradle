@@ -22,6 +22,14 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+  cache:
+    # 本地缓存类型：caffeine
+    type: caffeine
+    # 缓存名称（多个用英文,隔开）【使用方式：@Cacheable("cache1")】
+    cache-names: "cache1,cache2"
+    caffeine:
+      # initialCapacity：初始容量值、maximumSize：最大缓存数量、expireAfterWrite：过期时间
+      spec: "initialCapacity=50,maximumSize=500,expireAfterWrite=30s"
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource

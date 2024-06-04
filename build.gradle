@@ -37,7 +37,12 @@ allprojects {
 
     tasks.withType(JavaCompile).configureEach {
         options.encoding = "UTF-8"
-        options.compilerArgs += "--enable-preview"
+        options.compilerArgs.add("--enable-preview")
+        options.compilerArgs.add("-parameters")//编译后变量名称和源代码名称一致，IDEA "Java Compile" "Additional command line parameters"添加"-parameters"
+    }
+
+    tasks.withType(GroovyCompile).configureEach {
+        groovyOptions.parameters = true
     }
 
     //所有项目执行 Gradle 命令时跳过 compileTestJava 命令
