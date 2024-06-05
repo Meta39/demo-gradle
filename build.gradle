@@ -50,6 +50,11 @@ allprojects {
         enabled = false
     }
 
+    //自动扩展属性，方便在其它地方引用变量，例如：application.yml 文件配置的 java.version，如果不配置下面这行，可能无法获取变量。
+    tasks.named('processResources').configure {
+        expand(project.properties)
+    }
+
     repositories {
         //从前到后顺序执行，找不到就往后找。
         mavenLocal()//本地仓库

@@ -3,6 +3,7 @@ package com.fu.springboot;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,10 +20,17 @@ import java.util.List;
 @Slf4j
 @SpringBootTest
 public class SpringbootDemoApplicationTests {
+    @Value("${java.version}")
+    private String javaVersion;
     @Autowired
     private RestClient restClient;
     @Autowired
     private RestTemplate restTemplate;
+
+    @Test
+    public void javaVersion() {
+        log.info(javaVersion);
+    }
 
     /**
      * RestTemplate 发送携带参数的的 get 请求
