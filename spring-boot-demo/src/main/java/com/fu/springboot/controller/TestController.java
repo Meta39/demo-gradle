@@ -17,6 +17,7 @@ public class TestController {
 //        throw new MiniProgramException("小程序异常");//小程序异常，不需要状态码区分，但是需要区分异常类
         String name = Thread.currentThread().getName();
         log.info("name:{}", name);
+        log.info("param:{}", param);
         return param;
     }
 

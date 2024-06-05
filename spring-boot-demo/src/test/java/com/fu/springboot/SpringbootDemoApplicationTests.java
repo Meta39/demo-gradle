@@ -4,12 +4,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @Slf4j
 @SpringBootTest
@@ -19,21 +24,31 @@ public class SpringbootDemoApplicationTests {
     @Autowired
     private RestTemplate restTemplate;
 
+    /**
+     * RestTemplate 发送携带参数的的 get 请求
+     */
     @Test
-    void test(){
-        try{
-            ResponseEntity<String> response = restTemplate.getForEntity("http://127.0.0.1:82/test", String.class);
-            log.info("body:{}", response.getBody());
-        } catch (HttpStatusCodeException e) {
-            log.error("HTTP Code:{}, Error Message: {}", e.getStatusCode().value(), e.getMessage());
-        }
+    void testRestTemplateGet() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAcceptCharset(List.of(StandardCharsets.UTF_8));
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        //构建请求参数 UriComponentsBuilder 有坑
+        String uri = UriComponentsBuilder
+                .fromUriString("/test")
+                .queryParam("param", "get 参数").build(StandardCharsets.UTF_8).toString();
+        //在 URL 编码中，非 ASCII 字符（比如中文字符）会被转换成 % 开头的十六进制表示。%20 表示空格
+        String decodeUri = URLDecoder.decode(uri, StandardCharsets.UTF_8);
+        log.info("decodeUri: {}", decodeUri);
+        byte[] responseBodyByte = restTemplate.exchange(decodeUri, HttpMethod.GET, new HttpEntity<>("哈哈哈", headers), byte[].class).getBody();
+        String responseBodyString = new String(responseBodyByte, StandardCharsets.UTF_8);
+        log.info("responseBodyString:{}", responseBodyString);
     }
 
     /**
      * RestClient 发送携带参数的的 get 请求
      */
     @Test
-    void test1(){
+    void testRestClientGet() {
         //因为已经在 RestClient 配置了 baseUrl，直接写uri即可。直接转 String 可能会乱码。稳妥办法先转 byte[] 再设置编码为 UTF-8 转 String
         byte[] bodyByte = restClient
                 .get()
@@ -52,7 +67,7 @@ public class SpringbootDemoApplicationTests {
      * RestClient 发送 post 请求
      */
     @Test
-    void test2(){
+    void testRestClientPost() {
         byte[] bodyByte = restClient
                 .post()
 //                .uri("/test")
