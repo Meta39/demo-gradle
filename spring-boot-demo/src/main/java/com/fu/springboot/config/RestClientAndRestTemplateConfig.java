@@ -8,10 +8,14 @@ import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuil
 import org.apache.hc.core5.util.Timeout;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
+
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 /**
  * RestClient 和 RestTemplate http 客户端配置
@@ -26,6 +30,14 @@ public class RestClientAndRestTemplateConfig {
     public RestClient restClient() {
         return RestClient.builder()
                 .baseUrl("http://127.0.0.1:82")
+                .defaultHeaders(httpHeaders -> {
+                    httpHeaders.setAcceptCharset(List.of(StandardCharsets.UTF_8));//默认：请求的编码为 UTF-8
+                    httpHeaders.setContentType(MediaType.APPLICATION_JSON);//默认：请求的内容类型为 JSON
+                })
+                .defaultRequest(requestHeadersSpec -> {
+                    requestHeadersSpec.acceptCharset(StandardCharsets.UTF_8);//默认：反参编码格式
+                    requestHeadersSpec.accept(MediaType.APPLICATION_JSON);//默认：只接收JSON格式的反参
+                })
                 .requestFactory(new HttpComponentsClientHttpRequestFactory(HttpClients.custom()
                         .setConnectionManager(PoolingHttpClientConnectionManagerBuilder.create()
                                 .setMaxConnTotal(100) // 最大连接数，默认：25个
