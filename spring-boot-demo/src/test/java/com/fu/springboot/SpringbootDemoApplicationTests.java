@@ -39,7 +39,28 @@ public class SpringbootDemoApplicationTests {
         //在 URL 编码中，非 ASCII 字符（比如中文字符）会被转换成 % 开头的十六进制表示。%20 表示空格
         String decodeUri = URLDecoder.decode(uri, StandardCharsets.UTF_8);
         log.info("decodeUri: {}", decodeUri);
-        byte[] responseBodyByte = restTemplate.exchange(decodeUri, HttpMethod.GET, new HttpEntity<>("哈哈哈", headers), byte[].class).getBody();
+        byte[] responseBodyByte = restTemplate.exchange(decodeUri, HttpMethod.GET, new HttpEntity<>("请求体内容", headers), byte[].class).getBody();
+        String responseBodyString = new String(responseBodyByte, StandardCharsets.UTF_8);
+        log.info("responseBodyString:{}", responseBodyString);
+    }
+
+    /**
+     * RestTemplate 发送携带参数的的 post 请求
+     */
+    @Test
+    void testRestTemplatePost() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAcceptCharset(List.of(StandardCharsets.UTF_8));
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("zdy", "zdy header");
+        //构建请求参数 UriComponentsBuilder 有坑
+        String uri = UriComponentsBuilder
+                .fromUriString("/test")
+                .queryParam("param", "post 参数").build(StandardCharsets.UTF_8).toString();
+        //在 URL 编码中，非 ASCII 字符（比如中文字符）会被转换成 % 开头的十六进制表示。%20 表示空格
+        String decodeUri = URLDecoder.decode(uri, StandardCharsets.UTF_8);
+        log.info("decodeUri: {}", decodeUri);
+        byte[] responseBodyByte = restTemplate.exchange(decodeUri, HttpMethod.POST, new HttpEntity<>("请求体内容", headers), byte[].class).getBody();
         String responseBodyString = new String(responseBodyByte, StandardCharsets.UTF_8);
         log.info("responseBodyString:{}", responseBodyString);
     }
