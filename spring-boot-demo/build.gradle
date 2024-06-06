@@ -17,21 +17,34 @@ bootJar {//修改打成jar包以后的名字
     archiveBaseName = 'springBootDemo'//自定义的jar包名
     mainClass = 'com.fu.springboot.SpringbootDemoApplication'//主启动类
     version(null)//版本号
+    //跳过 GraalVM Native 镜像插件的命令
+    collectReachabilityMetadata{
+        enabled = false
+    }
 }
 
 //构建 docker 镜像
-tasks.named("bootBuildImage").configure {
-    // docker 镜像名称
-    imageName = "${project.name}:${project.version}"
+bootBuildImage {
 
-    // docker http 代理地址
-    environment["HTTP_PROXY"] = "http://proxy.example.com"
+    builder = "paketobuildpacks/builder-jammy-base:latest"
 
-    // docker https 代理地址
-    environment["HTTPS_PROXY"] = "https://proxy.example.com"
+    // docker 镜像名称【当前项目名称 + 父项目版本号】
+    imageName = "${project.name}:${rootProject.version}"
+
+    //JVM版本
+    environment["BP_JVM_VERSION"] = "21"
+
+    // docker http 代理地址【百度】
+    environment["HTTP_PROXY"] = "http://mirror.baidubce.com"
+
+    // docker https 代理地址【百度】
+    environment["HTTPS_PROXY"] = "https://mirror.baidubce.com"
 
     //是否推送镜像到 docker 仓库
     publish = false
+
+    //构建镜像之前清除缓存
+    cleanCache = true
 
     docker {
         // docker 地址
