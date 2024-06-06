@@ -1,4 +1,5 @@
 apply plugin: 'org.springframework.boot'
+apply plugin: 'org.graalvm.buildtools.native'//使用 GraalVM Native Image 插件，会看到 build 下面多了 native* 相关的命令
 dependencies {
     compileOnly 'org.projectlombok:lombok'//仅编译时使用，不参与打包
     annotationProcessor 'org.projectlombok:lombok'//注解
@@ -11,10 +12,52 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-cache'//本地缓存
     implementation 'com.github.ben-manes.caffeine:caffeine'//本地缓存使用 Caffeine（需要引入spring-boot-starter-cache）
 }
-springBoot {
-    mainClass = 'com.fu.springboot.SpringbootDemoApplication'//主启动类
-}
+
 bootJar {//修改打成jar包以后的名字
     archiveBaseName = 'springBootDemo'//自定义的jar包名
+    mainClass = 'com.fu.springboot.SpringbootDemoApplication'//主启动类
     version(null)//版本号
+}
+
+//构建 docker 镜像
+tasks.named("bootBuildImage").configure {
+    // docker 镜像名称
+    imageName = "${project.name}:${project.version}"
+
+    // docker http 代理地址
+    environment["HTTP_PROXY"] = "http://proxy.example.com"
+
+    // docker https 代理地址
+    environment["HTTPS_PROXY"] = "https://proxy.example.com"
+
+    //是否推送镜像到 docker 仓库
+    publish = false
+
+    docker {
+        // docker 地址
+        host = "tcp://127.0.0.1:2376"
+
+        // 是否启用 TLS 双向认证
+        tlsVerify = false
+
+        /*publishRegistry {
+            // docker 仓库用户名
+            username = "user"
+            // docker 仓库密码
+            password = "secret"
+            // url 地址【如果有的话】
+            url = "127.0.0.1/docker"
+            // 邮箱地址【如果有的话】
+            email = "12345@qq.com"
+            // token 令牌【如果有的话】
+            token = "token 令牌"
+        }*/
+    }
+
+}
+
+// GraalVM Native 配置
+graalvmNative {
+    // 禁用测试
+    testSupport = false
 }

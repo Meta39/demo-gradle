@@ -1,6 +1,6 @@
 //如果报Could not resolve org.springframework.boot:spring-boot-gradle-plugin:X.X.X，则修改IDEA setting中 Gradle JVM为Project SDK。
 buildscript {//构建gradle脚本自身需要的资源，可以声明的资源包括依赖项、第三方插件、maven仓库地址等
-    ext{
+    ext {
         //统一版本管理
         lombokVersion = '1.18.32'//lombok版本
         springBootVersion = '3.2.5'//spring boot 版本
@@ -8,6 +8,7 @@ buildscript {//构建gradle脚本自身需要的资源，可以声明的资源�
         mybatisPlusVersion = '3.5.6'
         springAiVersion = '0.8.1'//AI版本
         httpclient5Version = '5.3.1'//http client5 版本
+        graalvmNativeImageVersion = '0.10.2' // GraalVM Native Image plugin 版本
     }
 
     //设置仓库
@@ -21,6 +22,11 @@ buildscript {//构建gradle脚本自身需要的资源，可以声明的资源�
     dependencies {
         //spring-boot-gradle插件，方便版本管理
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        /*
+            引入 GraalVM Native Image 插件，然后可以在其它子项目通过 apply plugin: 插件【不用使用版本，因为这里已经有版本】使用插件
+            使用了 GraalVM Native Image 插件的子项目，必须使用 GraalVM JDK，或者配置 GRAALVM_HOME 环境变量为GraalVM JDK 安装路径
+         */
+        classpath("org.graalvm.buildtools:native-gradle-plugin:${graalvmNativeImageVersion}")
     }
 }
 
@@ -41,35 +47,26 @@ allprojects {
         options.compilerArgs.add("-parameters")//编译后变量名称和源代码名称一致，IDEA "Java Compile" "Additional command line parameters"添加"-parameters"
     }
 
-    tasks.withType(GroovyCompile).configureEach {
-        groovyOptions.parameters = true
-    }
-
     //所有项目执行 Gradle 命令时跳过 compileTestJava 命令
     tasks.named("compileTestJava").configure {
         enabled = false
-    }
-
-    //自动扩展属性，方便在其它地方引用变量，例如：application.yml 文件配置的 java.version，如果不配置下面这行，可能无法获取变量。
-    tasks.named('processResources').configure {
-        expand(project.properties)
     }
 
     repositories {
         //从前到后顺序执行，找不到就往后找。
         mavenLocal()//本地仓库
         maven { url 'https://maven.aliyun.com/repository/public' }//镜像仓库
-        maven { url 'https://repo.spring.io/milestone'}
+        maven { url 'https://repo.spring.io/milestone' }
         mavenCentral()//官方仓库
     }
 }
 
 //配置所有子项目
 subprojects {
-    apply plugin: 'io.spring.dependency-management'//版本管理插件
+    apply plugin: 'io.spring.dependency-management'//使用版本管理插件
 
     //dependencyManagement版本统一管理，类似maven的dependencyManagement
-    dependencyManagement{
+    dependencyManagement {
         dependencies {
             //统一版本管理
             dependency "org.projectlombok:lombok:${lombokVersion}"

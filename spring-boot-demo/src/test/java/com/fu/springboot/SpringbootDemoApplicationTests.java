@@ -20,16 +20,16 @@ import java.util.List;
 @Slf4j
 @SpringBootTest
 public class SpringbootDemoApplicationTests {
-    @Value("${java.version}")
-    private String javaVersion;
+    @Value("${spring.profiles.active}")
+    private String activeProfile;
     @Autowired
     private RestClient restClient;
     @Autowired
     private RestTemplate restTemplate;
 
     @Test
-    public void javaVersion() {
-        log.info(javaVersion);
+    public void contextLoads() {
+        log.info("activeProfile: {}", activeProfile);
     }
 
     /**
