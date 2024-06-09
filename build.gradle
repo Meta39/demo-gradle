@@ -71,7 +71,7 @@ subprojects {
             //统一版本管理
             dependency "org.projectlombok:lombok:${lombokVersion}"
             dependency "com.mysql:mysql-connector-j:${mysqlVersion}"
-            dependency "com.baomidou:mybatis-plus-boot-starter:${mybatisPlusVersion}"
+            dependency "com.baomidou:mybatis-plus-spring-boot3-starter:${mybatisPlusVersion}"
             dependency "org.apache.httpcomponents.client5:httpclient5:${httpclient5Version}"
         }
         imports {
