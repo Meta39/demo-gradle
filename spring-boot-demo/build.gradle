@@ -1,5 +1,8 @@
-apply plugin: "org.springframework.boot"
-apply plugin: "org.graalvm.buildtools.native"//使用 GraalVM Native Image 插件，会看到 build 下面多了 native* 相关的命令
+plugins{
+    id "org.springframework.boot"
+    id "org.graalvm.buildtools.native"//使用 GraalVM Native Image 插件，会看到 build 下面多了 native* 相关的命令
+}
+
 dependencies {
     compileOnly "org.projectlombok:lombok"//仅编译时使用，不参与打包
     annotationProcessor "org.projectlombok:lombok"//注解
