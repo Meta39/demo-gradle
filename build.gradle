@@ -42,6 +42,8 @@ allprojects {
     }
 
     tasks.withType(JavaCompile).configureEach {
+        //增量编译高版本默认：true
+        options.incremental = true
         options.encoding = "UTF-8"
         options.compilerArgs.add("--enable-preview")
         options.compilerArgs.add("-parameters")//编译后变量名称和源代码名称一致，IDEA "Java Compile" "Additional command line parameters"添加"-parameters"
