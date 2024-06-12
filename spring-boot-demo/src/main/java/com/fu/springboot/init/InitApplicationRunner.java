@@ -1,5 +1,6 @@
 package com.fu.springboot.init;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -11,10 +12,12 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class InitApplicationRunner implements ApplicationRunner {
+    @Value("${spring.profiles.active}")
+    private String activeProfile;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        System.out.println("ApplicationRunner init four.");
+        System.out.println("spring.profiles.active = " + activeProfile);
     }
 
 }

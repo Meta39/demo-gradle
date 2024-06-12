@@ -1,3 +1,5 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 plugins{
     id "org.springframework.boot"
     id "org.graalvm.buildtools.native"//使用 GraalVM Native Image 插件，会看到 build 下面多了 native* 相关的命令
@@ -26,4 +28,9 @@ bootJar {//修改打成jar包以后的名字
 graalvmNative {
     // 禁用测试
     testSupport = false
+}
+
+def activeProfile = System.getProperty("activeProfile") ?: "dev"
+processResources {
+    filter ReplaceTokens, tokens: [activeProfile: activeProfile]
 }
