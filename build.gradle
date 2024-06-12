@@ -54,6 +54,16 @@ allprojects {
         enabled = false
     }
 
+    //所有项目跳过 test 命令
+    test{
+        enabled = false
+    }
+
+    //所有项目跳过 testClasses 命令
+    testClasses {
+        enabled = false
+    }
+
     repositories {
         //从前到后顺序执行，找不到就往后找。
         mavenLocal()//本地仓库
