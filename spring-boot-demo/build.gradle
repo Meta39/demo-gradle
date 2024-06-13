@@ -1,6 +1,4 @@
-import org.apache.tools.ant.filters.ReplaceTokens
-
-plugins{
+plugins {
     id "org.springframework.boot"
     id "org.graalvm.buildtools.native"//使用 GraalVM Native Image 插件，会看到 build 下面多了 native* 相关的命令
 }
@@ -31,11 +29,6 @@ graalvmNative {
 }
 
 //禁用测试编译Aot
-compileAotTestJava{
+compileAotTestJava {
     enabled = false
-}
-
-def activeProfile = System.getProperty("activeProfile") ?: "dev"
-processResources {
-    filter ReplaceTokens, tokens: [activeProfile: activeProfile]
 }

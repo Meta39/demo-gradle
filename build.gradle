@@ -82,6 +82,16 @@ allprojects {
         enabled = false
     }
 
+    // 将 @env@ 替换为 命令行env的值
+    def env = System.getProperty("env") ?: "dev"
+    processResources {
+        filesMatching('**/application.yml') {
+            filter {
+                it.replace('@env@', env)
+            }
+        }
+    }
+
     repositories {
         //从前到后顺序执行，找不到就往后找。
         mavenLocal()//本地仓库
