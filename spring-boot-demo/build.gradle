@@ -43,7 +43,6 @@ tasks.register("bootRunTest", JavaExec) {
             '-Xmx512m'
     ]
 
-    finalizedBy(tasks.bootRun)
 }
 
 bootJar {//修改打成jar包以后的名字
