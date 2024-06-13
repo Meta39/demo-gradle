@@ -51,7 +51,8 @@ allprojects {
         options.failOnError = false
         options.encoding = "UTF-8"
         options.compilerArgs += "--enable-preview"//启用 Java 功能预览
-        options.compilerArgs += "-parameters"//编译后变量名称和源代码名称一致，IDEA "Java Compile" "Additional command line parameters"添加"-parameters"
+        options.compilerArgs += "-parameters"
+//编译后变量名称和源代码名称一致，IDEA "Java Compile" "Additional command line parameters"添加"-parameters"
     }
 
     tasks.withType(Test).configureEach {
@@ -70,7 +71,7 @@ allprojects {
     }
 
     //所有项目跳过 test 命令
-    test{
+    test {
         enabled = false
     }
 
@@ -82,6 +83,26 @@ allprojects {
     repositories {
         //从前到后顺序执行，找不到就往后找。
         mavenLocal()//本地仓库
+        /*maven {
+            url "公司私有仓库 releases 地址"
+            mavenContent {
+                releasesOnly()
+            }
+            credentials {
+                username "user"
+                password "password"
+            }
+        }
+        maven {
+            url "公司私有仓库 snapshots 地址"
+            mavenContent {
+                snapshotsOnly()
+            }
+            credentials {
+                username "user"
+                password "password"
+            }
+        }*/
         maven { url "https://maven.aliyun.com/repository/public" }//镜像仓库
         maven { url "https://repo.spring.io/milestone" }
         mavenCentral()//官方仓库
