@@ -16,6 +16,13 @@ dependencies {
     implementation "com.github.ben-manes.caffeine:caffeine"//本地缓存使用 Caffeine（需要引入spring-boot-starter-cache）
 }
 
+bootRun {
+    args += [
+            //使用开发环境配置
+            "--spring.profiles.active=dev"
+    ]
+}
+
 // 创建自定义的 bootRunTest 任务，实现运行 SpringBoot 使用 test 配置文件
 tasks.register("bootRunTest", JavaExec) {
     group = "application"
@@ -24,18 +31,16 @@ tasks.register("bootRunTest", JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     mainClass = "com.fu.springboot.SpringbootDemoApplication"//主启动类
 
-    // 获取当前系统环境中的 spring.profiles.active 属性，如果不存在，则默认为 'test'
-    def env = System.getProperty("spring.profiles.active") ?: 'test'
-
     // 添加命令行参数
     args += [
-            "--spring.profiles.active=" + env
+            //使用测试环境配置
+            "--spring.profiles.active=test"
     ]
 
     // JVM 参数
     jvmArgs = [
             '-Xms256m',
-            '-Xmx1024m'
+            '-Xmx512m'
     ]
 
     finalizedBy(tasks.bootRun)
