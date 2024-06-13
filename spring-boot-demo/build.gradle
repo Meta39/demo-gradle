@@ -16,6 +16,12 @@ dependencies {
     implementation "com.github.ben-manes.caffeine:caffeine"//本地缓存使用 Caffeine（需要引入spring-boot-starter-cache）
 }
 
+bootRun {
+    if (System.properties.containsKey('spring.profiles.active')) {
+        systemProperty "spring.profiles.active", System.properties['spring.profiles.active']
+    }
+}
+
 bootJar {//修改打成jar包以后的名字
 //    archiveBaseName = "springBootDemo"//自定义的jar包名
     mainClass = "com.fu.springboot.SpringbootDemoApplication"//主启动类
