@@ -57,12 +57,10 @@ allprojects {
 
     tasks.withType(Test).configureEach {
         jvmArgs += "--enable-preview"
-        jvmArgs += "-parameters"
     }
 
     tasks.withType(JavaExec).configureEach {
         jvmArgs += "--enable-preview"
-        jvmArgs += "-parameters"
     }
 
     //所有项目执行 Gradle 命令时跳过 compileTestJava 命令
