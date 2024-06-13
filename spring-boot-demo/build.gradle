@@ -30,6 +30,11 @@ graalvmNative {
     testSupport = false
 }
 
+//禁用测试编译Aot
+compileAotTestJava{
+    enabled = false
+}
+
 def activeProfile = System.getProperty("activeProfile") ?: "dev"
 processResources {
     filter ReplaceTokens, tokens: [activeProfile: activeProfile]
