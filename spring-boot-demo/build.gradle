@@ -16,33 +16,26 @@ dependencies {
     implementation "com.github.ben-manes.caffeine:caffeine"//本地缓存使用 Caffeine（需要引入spring-boot-starter-cache）
 }
 
-bootRun {
-    args += [
-            //使用开发环境配置
-            "--spring.profiles.active=dev"
-    ]
+tasks.register('bootRunTest') {
+    group "application"
+    bootRun.configure {
+        args += [
+                //使用测试环境配置
+                "--spring.profiles.active=test"
+        ]
+    }
+    finalizedBy(tasks.bootRun)
 }
 
-// 创建自定义的 bootRunTest 任务，实现运行 SpringBoot 使用 test 配置文件
-tasks.register("bootRunTest", JavaExec) {
-    group = "application"
-    description = "使用测试配置文件运行 Spring Boot 应用"
-
-    classpath = sourceSets.main.runtimeClasspath
-    mainClass = "com.fu.springboot.SpringbootDemoApplication"//主启动类
-
-    // 添加命令行参数
-    args += [
-            //使用测试环境配置
-            "--spring.profiles.active=test"
-    ]
-
-    // JVM 参数
-    jvmArgs = [
-            '-Xms256m',
-            '-Xmx512m'
-    ]
-
+tasks.register('bootRunDev') {
+    group "application"
+    bootRun.configure {
+        args += [
+                //使用测试环境配置
+                "--spring.profiles.active=dev"
+        ]
+    }
+    finalizedBy(tasks.bootRun)
 }
 
 bootJar {//修改打成jar包以后的名字
