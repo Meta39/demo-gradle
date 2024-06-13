@@ -42,11 +42,26 @@ allprojects {
     }
 
     tasks.withType(JavaCompile).configureEach {
+        options.release = 21
         //增量编译高版本默认：true
         options.incremental = true
+        //在单独的进程中执行 Java 编译任务
+        options.fork = true
+        //编译过程中的错误设置为不会导致构建失败，可能多地找出所有的编译问题
+        options.failOnError = false
         options.encoding = "UTF-8"
-        options.compilerArgs.add("--enable-preview")
-        options.compilerArgs.add("-parameters")//编译后变量名称和源代码名称一致，IDEA "Java Compile" "Additional command line parameters"添加"-parameters"
+        options.compilerArgs += "--enable-preview"//启用 Java 功能预览
+        options.compilerArgs += "-parameters"//编译后变量名称和源代码名称一致，IDEA "Java Compile" "Additional command line parameters"添加"-parameters"
+    }
+
+    tasks.withType(Test).configureEach {
+        jvmArgs += "--enable-preview"
+        jvmArgs += "-parameters"
+    }
+
+    tasks.withType(JavaExec).configureEach {
+        jvmArgs += "--enable-preview"
+        jvmArgs += "-parameters"
     }
 
     //所有项目执行 Gradle 命令时跳过 compileTestJava 命令
