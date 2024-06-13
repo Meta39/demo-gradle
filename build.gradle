@@ -57,6 +57,9 @@ allprojects {
 
     tasks.withType(Test).configureEach {
         jvmArgs += "--enable-preview"
+        //禁用测试报告提升构建速度
+        reports.html.required = false
+        reports.junitXml.required = false
     }
 
     tasks.withType(JavaExec).configureEach {
