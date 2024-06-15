@@ -1,3 +1,5 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 plugins {
     id "org.springframework.boot"
     id "org.graalvm.buildtools.native"//使用 GraalVM Native Image 插件，会看到 build 下面多了 native* 相关的命令
@@ -14,6 +16,13 @@ dependencies {
     implementation "org.apache.httpcomponents.client5:httpclient5"//apache http 连接池
     implementation "org.springframework.boot:spring-boot-starter-cache"//本地缓存
     implementation "com.github.ben-manes.caffeine:caffeine"//本地缓存使用 Caffeine（需要引入spring-boot-starter-cache）
+}
+
+def activeProfiles = project.properties['activeProfiles'] ?: "dev"
+processResources {
+    filter ReplaceTokens, tokens: [
+            activeProfiles: activeProfiles
+    ]
 }
 
 bootRun {
