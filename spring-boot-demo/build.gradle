@@ -23,8 +23,22 @@ processResources {
     exclude {
         FileTreeElement details ->
             {
-                !details.file.name.equals("application.yml") &&
-                        !details.file.name.equals("application-" + activeProfiles + ".yml")
+                (//排除不是当前环境的 yml 配置文件，防止配置文件里面的信息泄露。
+                        details.file.name.startsWith("application-")
+                                && details.file.name.endsWith(".yml")
+                                && !details.file.name.equals("application.yml")
+                                && !details.file.name.equals("application-" + activeProfiles + ".yml")
+                ) || (//排除不是当前环境的 yaml 配置文件，防止配置文件里面的信息泄露。
+                        details.file.name.startsWith("application-")
+                                && details.file.name.endsWith(".yaml")
+                                && !details.file.name.equals("application.yaml")
+                                && !details.file.name.equals("application-" + activeProfiles + ".yaml")
+                ) || (//排除不是当前环境的 properties 配置文件，防止配置文件里面的信息泄露。
+                        details.file.name.startsWith("application-")
+                                && details.file.name.endsWith(".properties")
+                                && !details.file.name.equals("application.properties")
+                                && !details.file.name.equals("application-" + activeProfiles + ".properties")
+                )
             }
     }
     filter ReplaceTokens, tokens: [
