@@ -17,7 +17,7 @@ dependencies {
 }
 
 tasks.register('bootRunTest') {
-    group "application"
+    group "app"
     bootRun.configure {
         args += [
                 //使用测试环境配置
@@ -28,7 +28,7 @@ tasks.register('bootRunTest') {
 }
 
 tasks.register('bootRunDev') {
-    group "application"
+    group "app"
     bootRun.configure {
         args += [
                 //使用测试环境配置
