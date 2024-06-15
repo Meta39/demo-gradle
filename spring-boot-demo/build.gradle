@@ -20,6 +20,13 @@ dependencies {
 
 def activeProfiles = project.properties['activeProfiles'] ?: "dev"
 processResources {
+    exclude {
+        FileTreeElement details ->
+            {
+                !details.file.name.equals("application.yml") &&
+                        !details.file.name.equals("application-" + activeProfiles + ".yml")
+            }
+    }
     filter ReplaceTokens, tokens: [
             activeProfiles: activeProfiles
     ]
