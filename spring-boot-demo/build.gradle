@@ -16,24 +16,15 @@ dependencies {
     implementation "com.github.ben-manes.caffeine:caffeine"//本地缓存使用 Caffeine（需要引入spring-boot-starter-cache）
 }
 
-tasks.register('bootRunTest') {
-    group "app"
-    bootRun.configure {
-        args += [
-                //使用测试环境配置
-                "--spring.profiles.active=test"
-        ]
-    }
-    finalizedBy(tasks.bootRun)
+bootRun {
+    //默认：dev
+    systemProperty 'spring.profiles.active', 'dev'
 }
 
-tasks.register('bootRunDev') {
-    group "app"
+tasks.register('bootRunTest') {
+    group "application"
     bootRun.configure {
-        args += [
-                //使用测试环境配置
-                "--spring.profiles.active=dev"
-        ]
+        systemProperty 'spring.profiles.active', 'test'
     }
     finalizedBy(tasks.bootRun)
 }
